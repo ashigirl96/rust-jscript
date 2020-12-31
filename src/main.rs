@@ -28,8 +28,11 @@ impl fmt::Display for Scripts {
     }
 }
 
-fn read_package_json() -> io::Result<Scripts> {
-    let path = Path::new("./package.json");
+fn read_package_json(package_json: Vec<String>) -> io::Result<Scripts> {
+    let path = match package_json.len() {
+        2 => Path::new(&package_json[1]),
+        _ => Path::new("./package.json"),
+    };
     let mut f = File::open(path)?;
     let mut s = String::new();
     f.read_to_string(&mut s)?;
@@ -38,7 +41,8 @@ fn read_package_json() -> io::Result<Scripts> {
 }
 
 fn main() {
-    let package_script = read_package_json();
+    let args: Vec<String> = std::env::args().collect();
+    let package_script = read_package_json(args);
     match package_script {
         Err(e) => println!("Error: cause {:?}", e.kind()),
         Ok(s) => println!("{}", s)

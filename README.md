@@ -1,6 +1,6 @@
 # jscript
 
-package.jsonの`"scripts"`取り出すだけ
+just extract `"scripts"` from package.json
 
 ## Example
 
